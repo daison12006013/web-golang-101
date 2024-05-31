@@ -1,0 +1,5 @@
+This is where we will create main files for doing cli based apps, such as:
+- patching database records
+- downloading information
+- background jobs
+- etc.

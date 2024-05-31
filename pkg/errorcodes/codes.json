@@ -1,0 +1,9 @@
+{
+    "Default Error": 500,
+    "Database Connection": 500,
+    "Query Error": 500,
+    "Record Not Found": 404,
+    "Permission Error": 403,
+    "Bad Request": 400,
+    "Conflict": 409
+}

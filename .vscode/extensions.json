@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "golang.go",
+        "msyrus.go-doc",
+        "766b.go-outliner",
+        "premparihar.gotestexplorer",
+        "xiaoxin-technology.goctl",
+        "casualjim.gotemplate",
+        "dunstontc.vscode-go-syntax",
+        "eamodio.gitlens"
+    ]
+}

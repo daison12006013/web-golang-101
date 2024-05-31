@@ -1,0 +1,12 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries:
+    - "sqlc/api_keys_query.sql"
+    - "sqlc/users_query.sql"
+    schema: "migrations"
+    gen:
+      go:
+        package: "queries"
+        out: "sqlc/queries"
+        # emit_json_tags: true # we wont be adding json tags to our structs

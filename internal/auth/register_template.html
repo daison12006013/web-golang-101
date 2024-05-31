@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .main {
+            padding: 20px;
+            background-color: #fff;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px #0000001a;
+        }
+
+        h1 {
+            color: #444;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <p>Hello, {{.Name}}!</p>
+            <p>Thank you for registering. Please click the link below to verify your email address:</p>
+            <a style="color: #fff; background-color: #3498db;" href="{{.VerificationLink}}">Verify Email</a>
+        </div>
+        <footer>
+            <p>If you did not register, please ignore this email.</p>
+            <p>If you can't see the button above, you may copy the link {{.VerificationLink}} and paste to your browser.</p>
+        </footer>
+    </div>
+</body>
+</html>
