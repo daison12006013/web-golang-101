@@ -23,6 +23,10 @@ func NewResponse(w http.ResponseWriter) *Response {
 }
 
 func (r *Response) HandleErrorCode(errc *ec.Error) {
+	if ok := r.WriteValidationError(errc); ok {
+		return
+	}
+
 	go func() {
 		if errc.HTTPStatus != nil && *errc.HTTPStatus >= 500 {
 			Logger().Err(errc.Error()).Msg("Error response")

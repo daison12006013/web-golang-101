@@ -13,8 +13,8 @@ import (
 )
 
 type LoginInput struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"email"    validate:"required,email" example:"john.doe@gmail.com"`
+	Password string `json:"password" validate:"required"       example:"1234qwer"`
 }
 
 type TokenResponse struct {

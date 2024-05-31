@@ -1,3 +1,48 @@
+definitions:
+  auth.LoginInput:
+    properties:
+      email:
+        example: john.doe@gmail.com
+        type: string
+      password:
+        example: 1234qwer
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.RegisterInput:
+    properties:
+      email:
+        example: john.doe@gmail.com
+        type: string
+      first_name:
+        example: John
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      password:
+        example: 1234qwer
+        type: string
+      password_confirm:
+        example: 1234qwer
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - password_confirm
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
 info:
   contact: {}
   title: Web Golang 101 API
@@ -46,21 +91,19 @@ paths:
       - application/json
       description: Login to the system
       parameters:
-      - description: Email
+      - description: Login Input
         in: body
-        name: email
+        name: body
         required: true
         schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/auth.LoginInput'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
       summary: Login
       tags:
       - Auth
@@ -71,7 +114,11 @@ paths:
       description: Refresh token
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
       security:
       - BearerAuth: []
       summary: Refresh Token
@@ -83,39 +130,19 @@ paths:
       - application/json
       description: Register a new user
       parameters:
-      - description: Email
+      - description: Register Input
         in: body
-        name: email
+        name: body
         required: true
         schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
-      - description: Password Confirmation
-        in: body
-        name: password_confirm
-        required: true
-        schema:
-          type: string
-      - description: First Name
-        in: body
-        name: first_name
-        required: true
-        schema:
-          type: string
-      - description: Last Name
-        in: body
-        name: last_name
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/auth.RegisterInput'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
       summary: Register
       tags:
       - Auth
@@ -132,7 +159,11 @@ paths:
         type: string
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
       summary: Verify Email
       tags:
       - Auth

@@ -19,11 +19,11 @@ import (
 )
 
 type RegisterInput struct {
-	Email           string `json:"email" validate:"required,email"`
-	Password        string `json:"password" validate:"required"`
-	PasswordConfirm string `json:"password_confirm" validate:"required,eqfield=Password"`
-	FirstName       string `json:"first_name,omitempty" validate:"required"`
-	LastName        string `json:"last_name,omitempty" validate:"required"`
+	Email           string `json:"email"                validate:"required,email"            example:"john.doe@gmail.com"`
+	Password        string `json:"password"             validate:"required"                  example:"1234qwer"`
+	PasswordConfirm string `json:"password_confirm"     validate:"required,eqfield=Password" example:"1234qwer"`
+	FirstName       string `json:"first_name,omitempty" validate:"required"                  example:"John"`
+	LastName        string `json:"last_name,omitempty"  validate:"required"                  example:"Doe"`
 }
 
 func Register(r *http.Request, body []byte) (*User, *ec.Error) {

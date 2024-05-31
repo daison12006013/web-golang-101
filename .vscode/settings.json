@@ -1,3 +1,5 @@
 {
-    "go.testFlags": ["-v"]
+    "go.testFlags": ["-v"],
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
 }

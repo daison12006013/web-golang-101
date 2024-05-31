@@ -99,7 +99,8 @@ func apiKeyDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		chi.URLParam(r, "key"),
 	)
 	if errc != nil {
-		utils.NewResponse(w).HandleErrorCode(errc)
+		resp.HandleErrorCode(errc)
+		return
 	}
 
 	resp.WriteSuccessResponse("API Key Deleted", nil)
@@ -112,11 +113,8 @@ func apiKeyDeleteHandler(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Router /register [post]
-// @Param email body string true "Email"
-// @Param password body string true "Password"
-// @Param password_confirm body string true "Password Confirmation"
-// @Param first_name body string true "First Name"
-// @Param last_name body string true "Last Name"
+// @Param body body auth.RegisterInput true "Register Input"
+// @Success 200 {object} utils.Response
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	resp := utils.NewResponse(w)
 
@@ -126,10 +124,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 	data, errc := utils.CommonJsonHandler(r, logic)
 	if errc != nil {
-		if ok := resp.WriteValidationError(errc); ok {
-			return
-		}
-
 		resp.HandleErrorCode(errc)
 		return
 	}
@@ -144,8 +138,8 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Router /login [post]
-// @Param email body string true "Email"
-// @Param password body string true "Password"
+// @Param body body auth.LoginInput true "Login Input"
+// @Success 200 {object} utils.Response
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	resp := utils.NewResponse(w)
 	logic := func(body []byte) (any, *ec.Error) {
@@ -154,10 +148,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	data, errc := utils.CommonJsonHandler(r, logic)
 	if errc != nil {
-		if ok := resp.WriteValidationError(errc); ok {
-			return
-		}
-
 		resp.HandleErrorCode(errc)
 		return
 	}
@@ -173,6 +163,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Router /refresh-token [post]
 // @Security BearerAuth
+// @Success 200 {object} utils.Response
 func refreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 	logic := func(body []byte) (any, *ec.Error) {
 		return auth.RefreshToken(r)
@@ -188,6 +179,7 @@ func refreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Router /verify-email/{token} [get]
 // @Param token path string true "Token"
+// @Success 200 {object} utils.Response
 func verifyEmailHandler(w http.ResponseWriter, r *http.Request) {
 	token := chi.URLParam(r, "token")
 	logic := func(body []byte) (any, *ec.Error) {

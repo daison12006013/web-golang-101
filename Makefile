@@ -27,7 +27,7 @@ remove-ds-store:
 	find . -name .DS_Store -delete
 
 swagger:
-	swag init -d cmd/http/
+	swag init -d cmd/http/ --parseDependency --parseInternal
 
 dbproxy:
 	make dbstart && fly proxy 5432 -a pg-prod-acme-com
