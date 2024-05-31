@@ -9,8 +9,11 @@ import (
 
 	"web-golang-101/pkg/utils"
 
+	_ "web-golang-101/docs"
+
 	"github.com/go-chi/chi/v5"
 	_ "github.com/lib/pq"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
 
 var port string
@@ -28,26 +31,23 @@ func init() {
 	utils.InitializeAppKey(utils.GetEnvWithDefault("APP_KEY", appKey))
 }
 
+// @title Web Golang 101 API
 func main() {
 	r := chi.NewRouter()
 
-	utils.SetDefaultMiddlewares(r)
-
 	apiRouter := ApiRoutes()
-	webRouter := WebRoutes()
-	adminRouter := AdminRoutes()
 
 	localhostRouter := chi.NewRouter()
 	localhostRouter.Mount("/api", apiRouter)
-	localhostRouter.Mount("/admin", adminRouter)
-	localhostRouter.Mount("/", webRouter)
 
 	hr := &HostRouter{}
 	hr.Map("^localhost:\\d+$", localhostRouter)
 	hr.Map("api\\.(.*)", apiRouter)
-	hr.Map("admin\\.(.*)", adminRouter)
-	hr.Map("(.*)", webRouter)
 	r.Mount("/", hr)
+
+	r.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"),
+	))
 
 	fmt.Printf("Server is listening on port %s...\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, r))

@@ -14,6 +14,8 @@ import (
 func ApiRoutes() *chi.Mux {
 	router := chi.NewRouter()
 
+	utils.SetDefaultMiddlewares(router)
+
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("API Route"))
 	})
@@ -52,6 +54,13 @@ func requiredJwtAuthenticationRoutes() func(r chi.Router) {
 }
 
 // apiKeyListsHandler
+// @Summary API Key Lists
+// @Description Get API Key Lists
+// @Tags API Keys
+// @Accept json
+// @Produce json
+// @Router /api-keys [get]
+// @Security ApiKeyAuth
 func apiKeyListsHandler(w http.ResponseWriter, r *http.Request) {
 	logic := func(body []byte) (any, *ec.Error) {
 		return apikeys.Lists(r.Context().Value(utils.ContextKey("UserID")).(string))
@@ -60,6 +69,13 @@ func apiKeyListsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // apiKeyGenerateHandler
+// @Summary API Key Generate
+// @Description Generate API Key
+// @Tags API Keys
+// @Accept json
+// @Produce json
+// @Router /api-keys [post]
+// @Security ApiKeyAuth
 func apiKeyGenerateHandler(w http.ResponseWriter, r *http.Request) {
 	logic := func(body []byte) (any, *ec.Error) {
 		return apikeys.Generate(r.Context().Value(utils.ContextKey("UserID")).(string))
@@ -68,6 +84,13 @@ func apiKeyGenerateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // apiKeyDeleteHandler
+// @Summary API Key Delete
+// @Description Delete API Key
+// @Tags API Keys
+// @Accept json
+// @Produce json
+// @Router /api-keys/{key} [delete]
+// @Security ApiKeyAuth
 func apiKeyDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	resp := utils.NewResponse(w)
 
@@ -83,6 +106,17 @@ func apiKeyDeleteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // registerHandler
+// @Summary Register
+// @Description Register a new user
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Router /register [post]
+// @Param email body string true "Email"
+// @Param password body string true "Password"
+// @Param password_confirm body string true "Password Confirmation"
+// @Param first_name body string true "First Name"
+// @Param last_name body string true "Last Name"
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	resp := utils.NewResponse(w)
 
@@ -104,6 +138,14 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // loginHandler
+// @Summary Login
+// @Description Login to the system
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Router /login [post]
+// @Param email body string true "Email"
+// @Param password body string true "Password"
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	resp := utils.NewResponse(w)
 	logic := func(body []byte) (any, *ec.Error) {
@@ -124,6 +166,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // refreshTokenHandler
+// @Summary Refresh Token
+// @Description Refresh token
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Router /refresh-token [post]
+// @Security BearerAuth
 func refreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 	logic := func(body []byte) (any, *ec.Error) {
 		return auth.RefreshToken(r)
@@ -132,6 +181,13 @@ func refreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // verifyEmailHandler
+// @Summary Verify Email
+// @Description Verify email
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Router /verify-email/{token} [get]
+// @Param token path string true "Token"
 func verifyEmailHandler(w http.ResponseWriter, r *http.Request) {
 	token := chi.URLParam(r, "token")
 	logic := func(body []byte) (any, *ec.Error) {

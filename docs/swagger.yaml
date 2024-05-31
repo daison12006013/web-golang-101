@@ -1,0 +1,139 @@
+info:
+  contact: {}
+  title: Web Golang 101 API
+paths:
+  /api-keys:
+    get:
+      consumes:
+      - application/json
+      description: Get API Key Lists
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: API Key Lists
+      tags:
+      - API Keys
+    post:
+      consumes:
+      - application/json
+      description: Generate API Key
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: API Key Generate
+      tags:
+      - API Keys
+  /api-keys/{key}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete API Key
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: API Key Delete
+      tags:
+      - API Keys
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login to the system
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Login
+      tags:
+      - Auth
+  /refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Refresh token
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Refresh Token
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: Password Confirmation
+        in: body
+        name: password_confirm
+        required: true
+        schema:
+          type: string
+      - description: First Name
+        in: body
+        name: first_name
+        required: true
+        schema:
+          type: string
+      - description: Last Name
+        in: body
+        name: last_name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Register
+      tags:
+      - Auth
+  /verify-email/{token}:
+    get:
+      consumes:
+      - application/json
+      description: Verify email
+      parameters:
+      - description: Token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Verify Email
+      tags:
+      - Auth
+swagger: "2.0"

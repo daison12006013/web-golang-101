@@ -26,6 +26,9 @@ deploy:
 remove-ds-store:
 	find . -name .DS_Store -delete
 
+swagger:
+	swag init -d cmd/http/
+
 dbproxy:
 	make dbstart && fly proxy 5432 -a pg-prod-acme-com
 
