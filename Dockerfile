@@ -10,6 +10,7 @@ COPY cmd/ /app/cmd/
 COPY internal/ /app/internal/
 COPY pkg/ /app/pkg/
 COPY sqlc/ /app/sqlc/
+COPY docs/ /app/docs/
 COPY go.mod /app/
 COPY go.sum /app/
 
@@ -30,7 +31,6 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root
 
-COPY dumps/ /root/dumps/
 COPY --from=builder /app/cmd/http/main /root/
 
 EXPOSE 8080

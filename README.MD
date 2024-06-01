@@ -83,6 +83,11 @@ Calling goose
 make goose
 ```
 
+## Cloud Services
+
+- :white_check_mark: Fly.io
+- :white_check_mark: AWS Fargate
+
 ## License
 
 This project is licensed under the terms of the Apache 2.0 license. For more details, see the [LICENSE](LICENSE) file in the project root.
