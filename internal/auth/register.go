@@ -11,11 +11,11 @@ import (
 	"net/http"
 	"text/template"
 
-	"web-golang-101/internal/mailer"
-	"web-golang-101/pkg/db"
-	ec "web-golang-101/pkg/errorcodes"
-	"web-golang-101/pkg/utils"
-	"web-golang-101/sqlc/queries"
+	"github.com/daison12006013/web-golang-101/internal/mailer"
+	"github.com/daison12006013/web-golang-101/pkg/db"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/sqlc/queries"
 )
 
 type RegisterInput struct {

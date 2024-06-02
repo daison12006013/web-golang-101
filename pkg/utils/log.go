@@ -3,7 +3,8 @@ package utils
 import (
 	"os"
 	"testing"
-	"web-golang-101/pkg/env"
+
+	"github.com/daison12006013/web-golang-101/pkg/env"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog"

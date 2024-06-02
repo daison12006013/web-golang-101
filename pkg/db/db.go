@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"web-golang-101/sqlc/queries"
+	"github.com/daison12006013/web-golang-101/sqlc/queries"
 )
 
 type DBC struct {

@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	ec "web-golang-101/pkg/errorcodes"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-playground/validator"

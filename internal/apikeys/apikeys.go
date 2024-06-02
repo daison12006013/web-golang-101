@@ -3,9 +3,9 @@ package apikeys
 import (
 	"context"
 
-	"web-golang-101/pkg/db"
-	ec "web-golang-101/pkg/errorcodes"
-	"web-golang-101/sqlc/queries"
+	"github.com/daison12006013/web-golang-101/pkg/db"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
+	"github.com/daison12006013/web-golang-101/sqlc/queries"
 
 	"github.com/google/uuid"
 	"gopkg.in/guregu/null.v4"

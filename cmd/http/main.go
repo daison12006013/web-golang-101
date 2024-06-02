@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"regexp"
 
-	"web-golang-101/pkg/env"
-	"web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/pkg/env"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 
-	_ "web-golang-101/docs"
+	_ "github.com/daison12006013/web-golang-101/docs"
 
 	"github.com/go-chi/chi/v5"
 	_ "github.com/lib/pq"

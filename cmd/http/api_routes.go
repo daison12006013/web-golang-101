@@ -3,10 +3,10 @@ package main
 import (
 	"net/http"
 
-	"web-golang-101/internal/apikeys"
-	"web-golang-101/internal/auth"
-	ec "web-golang-101/pkg/errorcodes"
-	"web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/internal/apikeys"
+	"github.com/daison12006013/web-golang-101/internal/auth"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 
 	"github.com/go-chi/chi/v5"
 )

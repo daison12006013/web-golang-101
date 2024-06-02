@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"web-golang-101/pkg/db"
-	"web-golang-101/pkg/env"
+	"github.com/daison12006013/web-golang-101/pkg/db"
+	"github.com/daison12006013/web-golang-101/pkg/env"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-chi/chi/v5"

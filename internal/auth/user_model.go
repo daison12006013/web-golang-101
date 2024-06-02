@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 
-	"web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 )
 
 // User a clone of queries.User{} from sqlc/queries/models.go

@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"web-golang-101/pkg/db"
-	ec "web-golang-101/pkg/errorcodes"
-	"web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/pkg/db"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 )
 
 func VerifyEmail(token string) (bool, *ec.Error) {

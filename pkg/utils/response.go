@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	ec "web-golang-101/pkg/errorcodes"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"

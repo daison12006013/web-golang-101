@@ -1,4 +1,4 @@
-module web-golang-101
+module github.com/daison12006013/web-golang-101
 
 go 1.21.1
 

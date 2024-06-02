@@ -4,9 +4,9 @@ import (
 	"errors"
 	"time"
 
-	"web-golang-101/pkg/env"
-	ec "web-golang-101/pkg/errorcodes"
-	"web-golang-101/pkg/utils"
+	"github.com/daison12006013/web-golang-101/pkg/env"
+	ec "github.com/daison12006013/web-golang-101/pkg/errorcodes"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 
 	"github.com/golang-jwt/jwt/v5"
 )
