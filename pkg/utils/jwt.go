@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
+	"web-golang-101/pkg/env"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -20,8 +22,20 @@ func GetJWTKey() []byte {
 
 type Claims struct {
 	UserID string `json:"user_id"`
-	For    string `json:"for"`
 	jwt.RegisteredClaims
+}
+
+func CreateJwtClaims(userID string, expTime time.Time, subject string) *Claims {
+	return &Claims{
+		UserID: userID,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    env.WithDefault("JWT_ISSUER", "web-golang-101"),
+			Subject:   subject,
+			ExpiresAt: jwt.NewNumericDate(expTime),
+			NotBefore: jwt.NewNumericDate(time.Now()),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
 }
 
 func RequireJWTAuthMiddleware(next http.Handler) http.Handler {
@@ -53,7 +67,7 @@ func RequireJWTAuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-			if claims.For != "access_token" {
+			if claims.Subject != "access_token" {
 				resp.WriteErrorResponse("Invalid access token", http.StatusUnauthorized)
 				return
 			}

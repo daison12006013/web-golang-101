@@ -33,6 +33,7 @@ APP_DEBUG=true
 APP_PORT="8080"
 
 # jwt
+JWT_ISSUER="web-golang-101"
 JWT_EXP="1h"
 JWT_REFRESH_EXP="168d"
 JWT_KEY="YourJWTKeyHere"

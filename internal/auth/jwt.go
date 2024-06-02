@@ -18,13 +18,7 @@ func GenerateToken(userID string) (string, *ec.Error) {
 		return "", ec.AsDefaultError(err)
 	}
 	expTime := time.Now().Add(expDuration)
-	claims := &utils.Claims{
-		UserID: userID,
-		For:    "access_token",
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(expTime),
-		},
-	}
+	claims := utils.CreateJwtClaims(userID, expTime, "access_token")
 
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tknStr, err := tkn.SignedString(utils.GetJWTKey())
@@ -37,20 +31,14 @@ func GenerateToken(userID string) (string, *ec.Error) {
 
 func GenerateRefreshToken(userID string) (string, *ec.Error) {
 	// Generate refresh token
-	refreshExpDuration, err := time.ParseDuration(env.WithDefault("JWT_REFRESH_EXP", "168h"))
+	expDuration, err := time.ParseDuration(env.WithDefault("JWT_REFRESH_EXP", "168h"))
 	if err != nil {
 		return "", ec.AsDefaultError(err)
 	}
-	refreshExpTime := time.Now().Add(refreshExpDuration)
-	refreshClaims := &utils.Claims{
-		UserID: userID,
-		For:    "refresh_token",
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(refreshExpTime),
-		},
-	}
+	expTime := time.Now().Add(expDuration)
+	claims := utils.CreateJwtClaims(userID, expTime, "refresh_token")
 
-	refreshTkn := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
+	refreshTkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	refreshTknStr, err := refreshTkn.SignedString(utils.GetJWTKey())
 	if err != nil {
 		return "", ec.AsDefaultError(err)
@@ -77,7 +65,7 @@ func VerifyRefreshToken(refreshTknStr string) (string, *ec.Error) {
 		return "", ec.AsBadRequest(errors.New("refresh token is invalid"))
 	}
 
-	if claims.For != "refresh_token" {
+	if claims.Subject != "refresh_token" {
 		return "", ec.AsBadRequest(errors.New("claim `for` is not 'refresh_token'"))
 	}
 
