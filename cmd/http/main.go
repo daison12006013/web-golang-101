@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/daison12006013/web-golang-101/pkg/env"
-	"github.com/daison12006013/web-golang-101/pkg/utils"
-
 	_ "github.com/daison12006013/web-golang-101/docs"
 
+	"github.com/daison12006013/web-golang-101/pkg/env"
+	"github.com/daison12006013/web-golang-101/pkg/utils"
 	"github.com/go-chi/chi/v5"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
@@ -22,6 +22,11 @@ var dsn string
 var appKey string
 
 func init() {
+	err := godotenv.Load()
+	if err != nil {
+		utils.Logger().Info().Msg("No .env file found, skipping...")
+	}
+
 	flag.StringVar(&port, "port", "8080", "Port to run the server on")
 	flag.StringVar(&dsn, "dsn", "", "Sentry DSN")
 	flag.StringVar(&appKey, "appKey", "", "Application Key")

@@ -1,5 +1,5 @@
 run:
-	LOG_LEVEL="debug" \
+	LOG_APP_LEVEL="debug" \
 	JWT_KEY="YourJWTKeyHere" \
 	APP_KEY="YourAPPKeyHere" \
 	MAILGUN_DOMAIN="mailer.acme.com" \
