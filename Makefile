@@ -41,6 +41,17 @@ dbstop:
 goose:
 	GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:YourPostgresPassword@localhost:5432/acme_dev" goose -dir=migrations $(filter-out $@,$(MAKECMDGOALS))
 
+ci:
+	go mod tidy
+	go mod verify
+
+test:
+	go test -v ./...
+
+coverage:
+	go test -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+
 %:
 	@:
 

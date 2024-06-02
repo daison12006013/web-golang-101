@@ -26,26 +26,46 @@ The project also integrates with LOG_SENTRY_LEVEL (default: "warn") and includes
 ## ENV Vars
 
 ```
+# app
 APP_KEY="YourAPPKeyHere"
-CORS_ORIGIN=api.acme.com
-DB_STRING="postgres://postgres:YourPostgresPassword@localhost:5432/your_database_dev?sslmode=disable"
-ENABLE_CAPTURE_ERRORS=true
-ENABLE_CORS_MIDDLEWARE=true
-ENABLE_LOG_REQUEST=true
-IP_CLIENT_HEADER_KEY="CF-Connecting-IP"
+APP_DEBUG=true
+APP_PORT="8080"
+
+# jwt
 JWT_EXP="1h"
 JWT_REFRESH_EXP="168d"
 JWT_KEY="YourJWTKeyHere"
-LOG_APP_LEVEL="warn"
-LOG_SENTRY_LEVEL="warn"
+
+# database
+DB_STRING="postgres://postgres:YourPostgresPassword@localhost:5432/your_database_dev?sslmode=disable"
+DB_MAX_OPEN_CONNS=20
+
+# mailgun
 MAIL_FROM="no-reply@acme.com"
 MAILGUN_API_KEY="YourMailgunAPIKey"
 MAILGUN_DOMAIN="mailer.acme.com"
-PORT="8080"
-RATE_LIMIT="5"
-REJECT_NON_SPECIFIC_DOMAIN="acme.com"
+
+# sentry
 SENTRY_DSN=""
 SENTRY_LEVEL="warn"
+
+# log
+LOG_APP_LEVEL="warn"
+LOG_SENTRY_LEVEL="warn"
+LOG_REQUEST_ENABLED=true
+
+# web application firewall
+WAF_ENABLED=true
+WAF_RATE_LIMIT="5"
+WAF_REJECT_REQUESTS_EXCEPT="acme.com"
+
+# get requestor's ip
+IP_CLIENT_HEADER_KEY="CF-Connecting-IP"
+
+# cross origin resource
+CORS_ORIGIN="*"
+CORS_METHODS="POST, GET, OPTIONS, PUT, DELETE"
+CORS_HEADERS="Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-API-KEY"
 ```
 
 ## Prebuilt Endpoints

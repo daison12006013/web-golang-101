@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 
 	"web-golang-101/sqlc/queries"
 )
@@ -26,12 +27,32 @@ func NewConnection() (*DBC, error) {
 
 	db, err := sql.Open(u.Scheme, connStr)
 	if err != nil {
-		return nil, fmt.Errorf("500 | %w", err)
+		return nil, err
 	}
+
+	maxConn, err := defaultMaxOpenConns()
+	if err != nil {
+		return nil, err
+	}
+	db.SetMaxOpenConns(*maxConn)
 
 	return &DBC{DB: db}, nil
 }
 
 func (d *DBC) NewQuery() *queries.Queries {
 	return queries.New(d.DB)
+}
+
+func defaultMaxOpenConns() (*int, error) {
+	maxConn := os.Getenv("DB_MAX_OPEN_CONNS")
+	if maxConn == "" {
+		maxConn = "20"
+	}
+
+	maxConnInt, err := strconv.Atoi(maxConn)
+	if err != nil {
+		return nil, err
+	}
+
+	return &maxConnInt, nil
 }

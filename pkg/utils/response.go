@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	ec "web-golang-101/pkg/errorcodes"
 
@@ -22,6 +23,20 @@ func NewResponse(w http.ResponseWriter) *Response {
 	return &Response{w: w}
 }
 
+func (r *Response) WriteSuccessResponse(message string, data interface{}) {
+	r.Success = true
+	r.Message = message
+	r.Data = data
+	r.writeResponse(http.StatusOK)
+}
+
+func (r *Response) WriteValidationResponse(message string, data interface{}) {
+	r.Success = false
+	r.Message = message
+	r.Data = data
+	r.writeResponse(http.StatusBadRequest)
+}
+
 func (r *Response) HandleErrorCode(errc *ec.Error) {
 	if ok := r.WriteValidationError(errc); ok {
 		return
@@ -37,17 +52,15 @@ func (r *Response) HandleErrorCode(errc *ec.Error) {
 }
 
 func (r *Response) WriteErrorResponse(message string, statusCode int) {
+	if os.Getenv("APP_DEBUG") == "true" {
+		r.Message = message
+	} else {
+		r.Message = "Internal Server Error"
+	}
+
 	r.Success = false
-	r.Message = message
 	r.Data = nil
 	r.writeResponse(statusCode)
-}
-
-func (r *Response) WriteSuccessResponse(message string, data interface{}) {
-	r.Success = true
-	r.Message = message
-	r.Data = data
-	r.writeResponse(http.StatusOK)
 }
 
 func (r *Response) WriteValidationError(errc *ec.Error) bool {
@@ -79,13 +92,6 @@ func (r *Response) WriteValidationError(errc *ec.Error) bool {
 	}
 
 	return false
-}
-
-func (r *Response) WriteValidationResponse(message string, data interface{}) {
-	r.Success = false
-	r.Message = message
-	r.Data = data
-	r.writeResponse(http.StatusBadRequest)
 }
 
 func (r *Response) writeResponse(statusCode int) {

@@ -22,8 +22,8 @@ import (
 
 func EnableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", GetEnvWithDefault("CORS_ORIGIN", "*"))
-	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Access-Control-Allow-Methods", GetEnvWithDefault("CORS_METHODS", "POST, GET, OPTIONS, PUT, DELETE"))
+	(*w).Header().Set("Access-Control-Allow-Headers", GetEnvWithDefault("CORS_HEADERS", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-API-KEY"))
 }
 
 func CorsMiddleware(next http.Handler) http.Handler {
@@ -178,29 +178,28 @@ func RequireApiKeyMiddleware(next http.Handler) http.Handler {
 }
 
 func SetDefaultMiddlewares(r *chi.Mux) {
-	rejectNonSpecificDomain := os.Getenv("REJECT_NON_SPECIFIC_DOMAIN") // Reject requests from non-specific domains
-	if rejectNonSpecificDomain != "" {
-		r.Use(RejectNonSpecificDomain(rejectNonSpecificDomain))
-	}
+	r.Use(CaptureErrors)
+	r.Use(CorsMiddleware)
 
-	rateLimitStr := GetEnvWithDefault("RATE_LIMIT", "5") // Rate limit in requests per second
-	if rateLimitStr != "" {
-		rateLimit, err := strconv.Atoi(rateLimitStr)
-		if err != nil {
-			log.Fatal("Invalid rate limit value:", err)
+	if GetEnvWithDefault("WAF_ENABLED", "true") == "true" {
+		rejectNonSpecificDomain := os.Getenv("WAF_REJECT_REQUESTS_EXCEPT") // Reject requests from non-specific domains
+		if rejectNonSpecificDomain != "" {
+			r.Use(RejectNonSpecificDomain(rejectNonSpecificDomain))
 		}
-		r.Use(RateLimit(rateLimit))
+
+		r.Use(WebFirewallMiddleware)
+
+		rateLimitStr := GetEnvWithDefault("WAF_RATE_LIMIT", "5") // Rate limit in requests per second
+		if rateLimitStr != "" {
+			rateLimit, err := strconv.Atoi(rateLimitStr)
+			if err != nil {
+				log.Fatal("Invalid rate limit value:", err)
+			}
+			r.Use(RateLimit(rateLimit))
+		}
 	}
 
-	if GetEnvWithDefault("ENABLE_CAPTURE_ERRORS", "true") == "true" {
-		r.Use(CaptureErrors)
-	}
-
-	if GetEnvWithDefault("ENABLE_CORS_MIDDLEWARE", "true") == "true" {
-		r.Use(CorsMiddleware)
-	}
-
-	if GetEnvWithDefault("ENABLE_LOG_REQUEST", "true") == "true" {
+	if GetEnvWithDefault("LOG_REQUEST_ENABLED", "true") == "true" {
 		r.Use(LogRequest)
 	}
 }
@@ -215,8 +214,8 @@ func RateLimit(rateLimit int) func(http.Handler) http.Handler {
 	)
 }
 
-func WafMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func WebFirewallMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := NewResponse(w)
 
 		sqlInjectionPattern := regexp.MustCompile(`(?i)(?:'|\b)(?:--|select\b|update\b|drop\b|insert\b|delete\b|or\b|and\b|exec\b|execute\b|union\b|truncate\b|declare\b)`)
@@ -234,5 +233,5 @@ func WafMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		next.ServeHTTP(w, r)
-	}
+	})
 }

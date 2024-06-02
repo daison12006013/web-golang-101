@@ -26,7 +26,7 @@ func init() {
 	flag.StringVar(&appKey, "appKey", "", "Application Key")
 	flag.Parse()
 
-	port = utils.GetEnvWithDefault("PORT", port)
+	port = utils.GetEnvWithDefault("APP_PORT", port)
 	utils.InitializeSentry(utils.GetEnvWithDefault("SENTRY_DSN", dsn))
 	utils.InitializeAppKey(utils.GetEnvWithDefault("APP_KEY", appKey))
 }
