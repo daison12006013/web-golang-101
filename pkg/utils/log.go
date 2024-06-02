@@ -3,6 +3,7 @@ package utils
 import (
 	"os"
 	"testing"
+	"web-golang-101/pkg/env"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog"
@@ -20,11 +21,11 @@ func Logger() *zerolog.Logger {
 		return &log.Logger
 	}
 
-	envLogLevel := GetEnvWithDefault("LOG_APP_LEVEL", "warn")
+	envLogLevel := env.WithDefault("LOG_APP_LEVEL", "warn")
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(getLogLevel(envLogLevel))
 
 	if os.Getenv("SENTRY_DSN") != "" {
-		envSentryLevel := GetEnvWithDefault("LOG_SENTRY_LEVEL", "warn")
+		envSentryLevel := env.WithDefault("LOG_SENTRY_LEVEL", "warn")
 		sentryLevel := getLogLevel(envSentryLevel)
 		log.Logger = log.Hook(sentryHook{minLevel: sentryLevel})
 	}

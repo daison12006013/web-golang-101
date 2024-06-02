@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"web-golang-101/pkg/db"
+	"web-golang-101/pkg/env"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-chi/chi/v5"
@@ -21,9 +22,9 @@ import (
 )
 
 func EnableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", GetEnvWithDefault("CORS_ORIGIN", "*"))
-	(*w).Header().Set("Access-Control-Allow-Methods", GetEnvWithDefault("CORS_METHODS", "POST, GET, OPTIONS, PUT, DELETE"))
-	(*w).Header().Set("Access-Control-Allow-Headers", GetEnvWithDefault("CORS_HEADERS", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-API-KEY"))
+	(*w).Header().Set("Access-Control-Allow-Origin", env.WithDefault("CORS_ORIGIN", "*"))
+	(*w).Header().Set("Access-Control-Allow-Methods", env.WithDefault("CORS_METHODS", "POST, GET, OPTIONS, PUT, DELETE"))
+	(*w).Header().Set("Access-Control-Allow-Headers", env.WithDefault("CORS_HEADERS", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-API-KEY"))
 }
 
 func CorsMiddleware(next http.Handler) http.Handler {
@@ -110,7 +111,7 @@ func CaptureErrors(handler http.Handler) http.Handler {
 func KeyByRealIP(r *http.Request) (string, error) {
 	var ip string
 
-	if fcip := r.Header.Get(GetEnvWithDefault("IP_CLIENT_HEADER_KEY", "CF-Connecting-IP")); fcip != "" {
+	if fcip := r.Header.Get(env.IpClientHeaderKey()); fcip != "" {
 		ip = fcip
 	} else if tcip := r.Header.Get("True-Client-IP"); tcip != "" {
 		ip = tcip
@@ -181,7 +182,7 @@ func SetDefaultMiddlewares(r *chi.Mux) {
 	r.Use(CaptureErrors)
 	r.Use(CorsMiddleware)
 
-	if GetEnvWithDefault("WAF_ENABLED", "true") == "true" {
+	if env.WithDefault("WAF_ENABLED", "true") == "true" {
 		rejectNonSpecificDomain := os.Getenv("WAF_REJECT_REQUESTS_EXCEPT") // Reject requests from non-specific domains
 		if rejectNonSpecificDomain != "" {
 			r.Use(RejectNonSpecificDomain(rejectNonSpecificDomain))
@@ -189,7 +190,7 @@ func SetDefaultMiddlewares(r *chi.Mux) {
 
 		r.Use(WebFirewallMiddleware)
 
-		rateLimitStr := GetEnvWithDefault("WAF_RATE_LIMIT", "5") // Rate limit in requests per second
+		rateLimitStr := env.WithDefault("WAF_RATE_LIMIT", "5") // Rate limit in requests per second
 		if rateLimitStr != "" {
 			rateLimit, err := strconv.Atoi(rateLimitStr)
 			if err != nil {
@@ -199,7 +200,7 @@ func SetDefaultMiddlewares(r *chi.Mux) {
 		}
 	}
 
-	if GetEnvWithDefault("LOG_REQUEST_ENABLED", "true") == "true" {
+	if env.WithDefault("LOG_REQUEST_ENABLED", "true") == "true" {
 		r.Use(LogRequest)
 	}
 }

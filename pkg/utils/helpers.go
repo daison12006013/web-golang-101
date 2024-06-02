@@ -15,14 +15,6 @@ import (
 	"github.com/go-playground/validator"
 )
 
-func GetEnvWithDefault(key, defaultValue string) string {
-	value := os.Getenv(key)
-	if value == "" {
-		return defaultValue
-	}
-	return value
-}
-
 func InitializeSentry(dsn string) {
 	if dsn == "" {
 		Logger().Info().Msg("Sentry DSN is empty. Skipping Sentry initialization.")
@@ -46,9 +38,12 @@ func InitializeAppKey(appKey string) {
 		Logger().Info().Msg("Application Key is empty. Skipping initialization.")
 		return
 	}
-
 	Logger().Info().Msg("Initializing Application Key...")
-	os.Setenv("APP_KEY", appKey)
+
+	err := os.Setenv("APP_KEY", appKey)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func GetHost(r *http.Request) string {
@@ -90,14 +85,6 @@ func Validator() *validator.Validate {
 		return name
 	})
 	return validate
-}
-
-func AppEnv() string {
-	return GetEnvWithDefault("APP_ENV", "production")
-}
-
-func IsDevelopment() bool {
-	return strings.HasPrefix(AppEnv(), "dev")
 }
 
 type ContextKey string

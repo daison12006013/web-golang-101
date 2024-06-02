@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"regexp"
 
+	"web-golang-101/pkg/env"
 	"web-golang-101/pkg/utils"
 
 	_ "web-golang-101/docs"
@@ -26,9 +27,9 @@ func init() {
 	flag.StringVar(&appKey, "appKey", "", "Application Key")
 	flag.Parse()
 
-	port = utils.GetEnvWithDefault("APP_PORT", port)
-	utils.InitializeSentry(utils.GetEnvWithDefault("SENTRY_DSN", dsn))
-	utils.InitializeAppKey(utils.GetEnvWithDefault("APP_KEY", appKey))
+	port = env.WithDefault("APP_PORT", port)
+	utils.InitializeSentry(env.WithDefault("SENTRY_DSN", dsn))
+	utils.InitializeAppKey(env.WithDefault("APP_KEY", appKey))
 }
 
 // @title Web Golang 101 API
@@ -45,7 +46,7 @@ func main() {
 	hr.Map("api\\.(.*)", apiRouter)
 	r.Mount("/", hr)
 
-	if utils.IsDevelopment() {
+	if env.IsDevelopment() {
 		r.Get("/swagger/*", httpSwagger.Handler(
 			httpSwagger.URL("/swagger/doc.json"),
 		))

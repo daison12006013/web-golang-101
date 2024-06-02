@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"web-golang-101/pkg/env"
 
 	"github.com/forgoer/openssl"
 	"golang.org/x/crypto/bcrypt"
@@ -38,7 +39,7 @@ type Crypt struct {
 }
 
 func NewCrypt() *Crypt {
-	appKey := GetEnvWithDefault("APP_KEY", "")
+	appKey := env.AppKey()
 	if appKey == "" {
 		panic("APP_KEY is not set")
 	}

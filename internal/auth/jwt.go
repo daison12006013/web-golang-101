@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"web-golang-101/pkg/env"
 	ec "web-golang-101/pkg/errorcodes"
 	"web-golang-101/pkg/utils"
 
@@ -11,8 +12,8 @@ import (
 )
 
 func GenerateToken(userID string) (string, *ec.Error) {
-	// Generate access token
-	expDuration, err := time.ParseDuration(utils.GetEnvWithDefault("JWT_EXP", "1h"))
+	// Generate access token)
+	expDuration, err := time.ParseDuration(env.WithDefault("JWT_EXP", "1h"))
 	if err != nil {
 		return "", ec.AsDefaultError(err)
 	}
@@ -36,7 +37,7 @@ func GenerateToken(userID string) (string, *ec.Error) {
 
 func GenerateRefreshToken(userID string) (string, *ec.Error) {
 	// Generate refresh token
-	refreshExpDuration, err := time.ParseDuration(utils.GetEnvWithDefault("JWT_REFRESH_EXP", "168h"))
+	refreshExpDuration, err := time.ParseDuration(env.WithDefault("JWT_REFRESH_EXP", "168h"))
 	if err != nil {
 		return "", ec.AsDefaultError(err)
 	}
