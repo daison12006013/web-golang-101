@@ -27,6 +27,7 @@ The project also integrates with LOG_SENTRY_LEVEL (default: "warn") and includes
 
 ```
 # app
+APP_ENV="production"
 APP_KEY="YourAPPKeyHere"
 APP_DEBUG=true
 APP_PORT="8080"

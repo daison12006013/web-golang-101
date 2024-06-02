@@ -92,6 +92,14 @@ func Validator() *validator.Validate {
 	return validate
 }
 
+func AppEnv() string {
+	return GetEnvWithDefault("APP_ENV", "production")
+}
+
+func IsDevelopment() bool {
+	return strings.HasPrefix(AppEnv(), "dev")
+}
+
 type ContextKey string
 
 func (c ContextKey) String() string {

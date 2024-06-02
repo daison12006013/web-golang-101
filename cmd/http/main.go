@@ -45,9 +45,11 @@ func main() {
 	hr.Map("api\\.(.*)", apiRouter)
 	r.Mount("/", hr)
 
-	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("/swagger/doc.json"),
-	))
+	if utils.IsDevelopment() {
+		r.Get("/swagger/*", httpSwagger.Handler(
+			httpSwagger.URL("/swagger/doc.json"),
+		))
+	}
 
 	fmt.Printf("Server is listening on port %s...\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, r))
