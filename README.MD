@@ -1,27 +1,24 @@
 **Attention:** ***Feel free to experiment with this, but please be aware it's still under enhancement.***
 
+# Web Golang 101: A Comprehensive Framework for Golang Web Development
 
-# Web Golang 101
-
-Web Golang 101 is an open-source project designed to provide a practical and direct approach to integrating Golang into your web platform. It offers a robust set of features including Sentry DSN, Zero Log, Mailgun, Goose Migration, SQLc, and AES-CBC-256 Encryption, all designed to align with the standards of popular web frameworks like Laravel.
-
-The project now includes prebuilt endpoints for registration, email verification, login, and token refresh. These endpoints utilize JSON Web Tokens (JWT) for secure authentication and session management, serving as a comprehensive starting point for building secure and efficient web applications with Golang. This JWT-based approach ensures a stateless, scalable solution that can easily integrate with various front-end frameworks.
-
-The project also integrates with LOG_SENTRY_LEVEL (default: "warn") and includes an encrypted users table where the email is stored as an encrypted value.
+Web Golang 101 is an all-inclusive, robust framework designed to facilitate web development using the Go programming language. This project integrates a wide array of tools and features, providing a streamlined development process and a high degree of efficiency and security.
 
 ## Features
 
-- :white_check_mark: Sentry DSN
-- :white_check_mark: Zero Log
-    - integrated with `LOG_SENTRY_LEVEL` (default: "warn")
-- :white_check_mark: Mailgun
-- :white_check_mark: Goose Migration
-- :white_check_mark: SQLc
-- :white_check_mark: AES-CBC-256 Encryption
-    - Follows most of web frameworks standards such as Laravel
-- :white_check_mark: Encrypted `users` table
-    - This is where the `email` and password are stored in encrypted value
-    - The `email_hash` is also stored as sha256 for filtering purposes
+- [Sentry](https://sentry.io/)
+- [Mailgun](https://app.mailgun.com/mg/dashboard)
+- [Goose Migration](https://github.com/pressly/goose)
+- [SQLc](https://github.com/sqlc-dev/sqlc)
+- [Swagger API Doc](https://github.com/swaggo/swag)
+- [AES-256-CBC](https://docs.anchormydata.com/docs/what-is-aes-256-cbc) Encryption
+    - Follows most of web frameworks standards such as [Laravel](https://laravel.com)
+    - Secured `users` table
+        - column `email` is encrypted by default using AES-256-CBC
+        - column `email_hash` is hashed using sha256
+        - column `password` uses bcrypt
+- [Zero Log](https://github.com/rs/zerolog)
+    - integrated with sentry thru hooks `LOG_SENTRY_LEVEL` (default: "warn")
 
 ## ENV Vars
 
@@ -35,7 +32,7 @@ APP_PORT="8080"
 # jwt
 JWT_ISSUER="web-golang-101"
 JWT_EXP="1h"
-JWT_REFRESH_EXP="168d"
+JWT_REFRESH_EXP="168h"
 JWT_KEY="YourJWTKeyHere"
 
 # database
@@ -70,45 +67,28 @@ CORS_METHODS="POST, GET, OPTIONS, PUT, DELETE"
 CORS_HEADERS="Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-API-KEY"
 ```
 
+## Default service
+
+- Fly.io
+    - fly.yaml
+- AWS Fargate
+    - copilot
+
 ## Prebuilt Endpoints
 
-**authorization:**
+- **authorization:**
+    - (POS) /register
+    - (GET) /verify-email/{token}
+    - (POS) /login
+    - (POS) /refresh-token
+- **api key generator for your business:**
+    - (GET) /api-keys
+    - (POS) /api-keys
+    - (DEL) /api-keys/{key}
 
-- :white_check_mark: (POS) /register
-- :white_check_mark: (GET) /verify-email/{token}
-- :white_check_mark: (POS) /login
-- :white_check_mark: (POS) /refresh-token
+## Reporting Security Vulnerabilities
 
-**api key generator for your business:**
-
-- :white_check_mark: (GET) /api-keys
-- :white_check_mark: (POS) /api-keys
-- :white_check_mark: (DEL) /api-keys/{key}
-
-## Makefile
-
-To run a local server
-
-```bash
-make run
-```
-
-To tunnel the database (via fly.io)
-
-```bash
-make dbproxy
-```
-
-Calling goose
-
-```bash
-make goose
-```
-
-## Cloud Services
-
-- :white_check_mark: Fly.io
-- :white_check_mark: AWS Fargate
+We prioritize security in our project. If you find a security vulnerability, please email us directly at daison12006013@gmail.com instead of publicizing it. Provide as much detail as possible about the vulnerability, including its nature, reproduction steps, and potential impacts. We appreciate your help in enhancing our application's security. All reports are thoroughly investigated and addressed promptly and responsibly to maintain our software's safety and integrity.
 
 ## License
 
